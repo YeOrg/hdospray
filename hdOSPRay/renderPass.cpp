@@ -339,9 +339,10 @@ HdOSPRayRenderPass::_Execute(HdRenderPassStateSharedPtr const& renderPassState,
                             auto vm = renderPassState->GetWorldToViewMatrix();
                             const float m1 = -pm[2][2];
                             const float m2 = -pm[3][2];
-                            const float far = (2.f * m2) / (2.f * m1 - 2.f);
-                            const float near = ((m1 - 1.f) * near) / (m1 + 1.f);
-                            const float diff = (far - near);
+                            // near and for are defined under windows
+                            const float _far = (2.f * m2) / (2.f * m1 - 2.f);
+                            const float _near = ((m1 - 1.f) * _near) / (m1 + 1.f);
+                            const float diff = (_far - _near);
                             bool valid = false;
                             tbb::parallel_for(
                                    tbb::blocked_range<int>(0, frameSize),
@@ -349,7 +350,7 @@ HdOSPRayRenderPass::_Execute(HdRenderPassStateSharedPtr const& renderPassState,
                                        for (int i = r.begin(); i < r.end();
                                             ++i) {
                                            float& d = depth[i];
-                                           d = clamp((d - near) / diff, 0.f,
+                                           d = clamp((d - _near) / diff, 0.f,
                                                      1.f);
                                        }
                                    });

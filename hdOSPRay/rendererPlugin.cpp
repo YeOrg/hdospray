@@ -80,8 +80,16 @@ HdOSPRayRendererPlugin::DeleteRenderDelegate(HdRenderDelegate* renderDelegate)
     ospShutdown();
 }
 
+#if PXR_MINOR_VERSION == 23
+bool
+HdOSPRayRendererPlugin::IsSupported(bool gpuEnabled) const
+{
+    return true;
+}
+#elif PXR_MINOR_VERSION == 22
 bool
 HdOSPRayRendererPlugin::IsSupported() const
 {
     return true;
 }
+#endif

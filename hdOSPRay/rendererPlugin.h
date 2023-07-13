@@ -20,7 +20,11 @@ public:
     virtual void
     DeleteRenderDelegate(HdRenderDelegate* renderDelegate) override;
 
+#if PXR_MINOR_VERSION == 23
+    virtual bool IsSupported(bool gpuEnabled) const override;
+#elif PXR_MINOR_VERSION == 22
     virtual bool IsSupported() const override;
+#endif
 
 private:
     HdOSPRayRendererPlugin(const HdOSPRayRendererPlugin&) = delete;
